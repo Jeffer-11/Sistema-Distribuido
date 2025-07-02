@@ -1,66 +1,176 @@
-#!/usr/bin/env python3
 import pandas as pd
-
-ser = pd.Series(data=[1, 2, 3, 4, 5], index=['tom', 'bob', 'rob', 'ed', 'vik'])
-
-print(ser.index)
-
-
-print('fabian' in ser)
-print('before')
-print(ser)
-print('after')
-print(ser*2)
-print('power into 2')
-print(ser**2)
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 
 
-ser = pd.Series(data=[100, 200, 300, 400, 500], index=['tom', 'bob', 'rob', 'ed', 'vik'])
-
-print(ser[[2,4]])
-print(ser[['tom']])
-
-# PANDAS DATAFRAME
-print('PANDAS DATAFRAME')
-
-df = pd.DataFrame({
-    'one': pd.Series(data=[100, 200, 300], index=['apple', 'ball', 'clock']),
-    'two': pd.Series(data=[100, 200, 300], index=['apple', 'ball', 'clock'])
-})
-print('----------------------------------------------')
-df1=pd.DataFrame(df)
-print(df)
-print('Index : {}',format(df1.index))
-print('----------------------------------------------')
-print(df.columns)
-df1['three']=df1['one']*df1['two']
-print(df1)
-print('----------------------------------------------')
-df1['flag']=df1['one']>100
-print(df1)
-print('----------------------------------------------')
-aux=df1.pop('three')
-print(df1)
-print('----------------------------------------------')
-del df1['one']
-print(df1)
-print('----------------------------------------------')
-df1.insert(2,'copia de dos',df1['two'])
-print(df1)
-print('----------------------------------------------')
-df1['flag two']=df1['copia de dos']>200
-aux2=df1.pop('copia de dos')
-print(df1)
-print('----------------------------------------------')
-df1['twoupperhalf']=df1['two'][:2]
-print(df1)
-print('----------------------------------------------')
-df1['twodonwhalf']=df1['two'][2:]
-print(df1)
+print('case studies: movies anda data analysis')
+print('-----------------------------------------')
+print('MOVIES')
+movies=pd.read_csv('movies.csv')
+print(movies.head(2))
+print(movies.columns)
+print(movies.index)
+print(movies.shape)
+print('-----------------------------------------')
+print('TAGS')
+tags=pd.read_csv('tags.csv')
+print(tags.head(2))
+print(tags.columns)
+print(tags.index)
+print(tags.shape)
+print('-----------------------------------------')
+print('RATING')
+ratings=pd.read_csv('ratings.csv')
+print(ratings.head(2))
+print(ratings.columns)
+print(ratings.index)
+print(ratings.shape)
+print('ok')
+print('-----------------------------------------')
+print('-----------------------------------------')
+print('ELIMIMAR TIMESTAMP')
+print('-----------------------------------------')
+del ratings['timestamp']
+print('-----------------------------------------')
+del tags['timestamp']
+print(tags.head(2))
+print(ratings.head(2))
+# print('-----------------------------------------')
+# print('-----------------------------------------')
 
 
-import pandas as pd
+# print(tags.iloc[[0,11,2000]])
+# print('------------------CABEZA-----------------------')
+# print(ratings.head())
+# print('-----------------COLA------------------------')
+# print(ratings.tail())
+# print('-----------------------------------------')
+# statistics=ratings['rating'].describe()
+# print(statistics)
+# print('promedio')
+# print(ratings['rating'].mean())
+# print('minimo')
+# print(ratings['rating'].min())
+# print('maximo')
+# print(ratings['rating'].max())
+# print('media')
+# print(ratings['rating'].median())
+# print('moda')
+# print(ratings['rating'].mode())
 
-print('Reading CSV file into DataFrame')
-movies = pd.read_csv('movies.csv')
-print(movies.head())
+
+# filter=ratings['rating']>5
+# print(filter.any())
+# print('-----------------------------------------')
+# print('-----------------------------------------')
+
+# print('movies')
+# print(movies.shape)
+
+# print(movies.isnull().any())
+
+# print('-----------------------------------------')
+# print('-----------------------------------------')
+# print('rating')
+# print(ratings.shape)
+
+# print(ratings.isnull().any())
+
+# print('-----------------------------------------')
+# print('-----------------------------------------')
+# print('tags')
+# print(tags.shape)
+
+# print(tags.isnull().any())
+
+# tags=tags.dropna()
+
+# import matplotlib.pyplot as plt
+
+# ratings.hist(figsize=(10, 8), edgecolor='black',color='purple',column='rating')
+# plt.suptitle('Histogramas de columnas numéricas')
+# plt.show()
+
+# print(ratings.head(10))
+# print(ratings.shape)
+
+
+print('-----------------------------------------')
+print('-----------------------------------------')
+
+print(tags.head(3))
+tagstwovariableS=tags[['movieId','tag']]
+print(tagstwovariableS.head(5))
+
+print(ratings.shape)
+
+
+
+# Sample ratings
+samplestaken = ratings[1000:1020]
+print(samplestaken.shape)
+print(samplestaken.head(2))
+
+# Tags
+print(tags.head(2))
+print(tags.shape)
+
+tags_counts = tags['tag'].value_counts()
+print(tags_counts.shape)
+print(tags_counts.iloc[:10])  # ← CORREGIDO
+
+# Gráfico de tags
+tags_counts.iloc[:10].plot(kind='bar', figsize=[15, 10], color='skyblue', edgecolor='black')
+plt.title("Top 10 Tags más frecuentes")
+plt.xlabel("Tag")
+plt.ylabel("Frecuencia")
+plt.xticks(rotation=45)
+plt.tight_layout()
+#plt.show()  # ← muestra la gráfica en pantalla
+
+
+# Ratings
+ratings_counts = ratings['rating'].value_counts()
+print(ratings_counts.shape)
+print(ratings_counts.iloc[:10])  # ← CORREGIDO
+
+# Gráfico de ratings
+ratings_counts.iloc[:10].plot(kind='bar', figsize=[15, 10], color='lightgreen', edgecolor='black')
+plt.title("Top 10 Ratings más frecuentes")
+plt.xlabel("Rating")
+plt.ylabel("Frecuencia")
+plt.xticks(rotation=0)
+plt.tight_layout()
+#plt.show()  # ← muestra la gráfica en pantalla
+
+print('-----------------------------------------')
+print('-----------------------------------------')
+print(movies.head(3))
+print('-----------------------------------------')
+print(movies.shape)
+print('-----------------------------------------')
+# print(movies.columns)
+Animation=movies['genres'].str.contains('Animation', case=False, na=False)
+Animation_df=movies[Animation]
+print(Animation_df)
+print('-----------------------------------------')
+print(Animation_df.shape)
+
+counts=ratings[['movieId', 'rating']].groupby('movieId').mean()
+print(ratings.shape)
+print(counts)  
+
+
+
+# Calcular promedio de rating por movieId
+average_ratings = ratings.groupby('movieId')['rating'].mean().reset_index()
+
+# Unir con los títulos de películas
+movie_ratings = pd.merge(average_ratings, movies[['movieId', 'title']], on='movieId')
+
+# Ordenar de mayor a menor promedio
+movie_ratings_sorted = movie_ratings.sort_values(by='rating', ascending=False)
+
+# Mostrar los 10 con mejor promedio
+print(movie_ratings_sorted.head(10))

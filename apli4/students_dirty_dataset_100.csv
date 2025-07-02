@@ -1,0 +1,121 @@
+student_id,name,age,gender,math_score,english_score,admission_year,department
+1001,Lucía Méndez,22.0,Male,85.0,80.0,2021.0,Electrical
+1002,Daniel A.,23.0,Female,85.0,65.0,,ENGINEERING
+1003,Pablo S.,18.0,nan,85.0,80.0,2020.0,Engineering
+1004,Ana Gómez,20.0,Male,70.0,,2021.0,Electrical
+1005,Marta Vega,20.0,Female,70.0,80.0,2020.0,Computer Science
+1006,Jorge Martínez,23.0,Female,80.0,65.0,2021.0,ENGINEERING
+1007,Marta Vega,18.0,Female,70.0,95.0,2021.0,ENGINEERING
+1008,Luis Pérez,20.0,Male,80.0,65.0,2023.0,ENGINEERING
+1009,Luis Pérez,20.0,Female,85.0,75.0,2022.0,ENGINEERING
+1010,Pedro Ruiz,,Female,85.0,80.0,2022.0,Engineering
+1011,Marta Vega,21.0,Male,75.0,70.0,2020.0,Engineering
+1012,Carlos Gómez,20.0,Male,70.0,70.0,2022.0,Electrical
+1013,Ana Gómez,21.0,Female,85.0,95.0,2023.0,ENGINEERING
+1014,Luis Pérez,18.0,Male,85.0,85.0,2022.0,Electrical
+1015,Maria López,20.0,Male,85.0,85.0,2022.0,Electrical
+1016,Pedro Ruiz,22.0,Male,80.0,70.0,2023.0,Engineering
+1017,Jorge Martínez,21.0,Female,70.0,80.0,2022.0,computer science
+1018,Jorge Martínez,23.0,Female,85.0,90.0,2022.0,Engineering
+1019,Camila Ríos,23.0,Female,75.0,90.0,2022.0,Computer Science
+1020,Lucía Méndez,23.0,Male,70.0,70.0,2021.0,ENGINEERING
+1021,Unknown,23.0,Male,80.0,75.0,2021.0,Electrical
+1022,José Martínez,19.0,Female,75.0,80.0,2022.0,Engineering
+1023,Ana Gómez,19.0,Male,85.0,85.0,2020.0,Engineering
+1024,Daniel A.,21.0,Female,70.0,75.0,2023.0,Electrical
+1025,Luis Pérez,20.0,Male,80.0,80.0,2020.0,Electrical
+1026,Ana Gómez,22.0,Male,85.0,80.0,2022.0,Engineering
+1027,Pedro Ruiz,19.0,Male,70.0,80.0,2022.0,Electrical
+1028,José Martínez,20.0,Male,85.0,70.0,2022.0,Computer Science
+1029,Carlos Gómez,18.0,Male,70.0,95.0,2023.0,Electrical
+1030,Lucía Méndez,21.0,Female,80.0,80.0,2021.0,ENGINEERING
+1031,Camila Ríos,23.0,Female,75.0,75.0,2022.0,Electrical
+1032,Jorge Martínez,23.0,Female,85.0,65.0,2020.0,ENGINEERING
+1033,Maria López,20.0,Female,95.0,75.0,2021.0,Computer Science
+1034,Pablo S.,20.0,nan,75.0,65.0,2021.0,ENGINEERING
+1035,Carlos Gómez,21.0,Female,85.0,80.0,2020.0,Electrical
+1036,Pablo S.,19.0,Male,95.0,75.0,2023.0,Electrical
+1037,Daniel A.,22.0,Female,80.0,80.0,2020.0,computer science
+1038,Maria López,21.0,Female,70.0,,2021.0,computer science
+1039,Pablo S.,20.0,Male,90.0,75.0,,Electrical
+1040,Marta Vega,23.0,Male,80.0,90.0,2021.0,Computer Science
+1041,Pedro Ruiz,20.0,Female,90.0,65.0,2021.0,Computer Science
+1042,Daniel A.,19.0,Male,90.0,70.0,2022.0,computer science
+1043,José Martínez,22.0,Female,90.0,95.0,2022.0,Engineering
+1044,Jorge Martínez,22.0,Female,85.0,85.0,2023.0,ENGINEERING
+1045,Luis Pérez,18.0,Female,70.0,80.0,2022.0,computer science
+1046,Pablo S.,21.0,Male,70.0,90.0,2021.0,ENGINEERING
+1047,Camila Ríos,20.0,Female,75.0,80.0,2020.0,computer science
+1048,Jorge Martínez,20.0,Female,70.0,70.0,,Computer Science
+1049,Maria López,22.0,Male,80.0,65.0,2020.0,computer science
+1050,Lucía Méndez,20.0,Female,70.0,95.0,2021.0,Engineering
+1051,Carlos Gómez,23.0,Female,80.0,85.0,2021.0,computer science
+1052,Lucía Méndez,18.0,Female,75.0,70.0,2021.0,ENGINEERING
+1053,Camila Ríos,18.0,Male,95.0,70.0,2020.0,Computer Science
+1054,Camila Ríos,20.0,Male,80.0,75.0,2022.0,computer science
+1055,Jorge Martínez,18.0,Male,85.0,80.0,2023.0,computer science
+1056,Unknown,19.0,Male,85.0,65.0,2022.0,Electrical
+1057,Jorge Martínez,21.0,Male,85.0,80.0,2022.0,computer science
+1058,Marta Vega,20.0,nan,90.0,70.0,2020.0,Computer Science
+1059,Unknown,18.0,Female,70.0,75.0,2023.0,Computer Science
+1060,Luis Pérez,19.0,Female,85.0,75.0,2023.0,ENGINEERING
+1061,Pedro Ruiz,22.0,Male,75.0,85.0,2023.0,Engineering
+1062,Maria López,20.0,Male,85.0,75.0,2023.0,computer science
+1063,Marta Vega,20.0,Female,85.0,70.0,2023.0,ENGINEERING
+1064,Pedro Ruiz,19.0,Female,80.0,65.0,2023.0,ENGINEERING
+1065,Pedro Ruiz,19.0,nan,95.0,80.0,2022.0,computer science
+1066,Camila Ríos,19.0,Male,85.0,85.0,2022.0,Engineering
+1067,Lucía Méndez,18.0,Female,70.0,80.0,2021.0,computer science
+1068,Daniel A.,22.0,nan,85.0,90.0,2023.0,computer science
+1069,Carlos Gómez,18.0,Female,85.0,65.0,2020.0,Electrical
+1070,Carlos Gómez,20.0,Male,90.0,95.0,,ENGINEERING
+1071,Jorge Martínez,20.0,Male,85.0,80.0,2021.0,Computer Science
+1072,Maria López,18.0,Female,70.0,80.0,2020.0,ENGINEERING
+1073,Carlos Gómez,18.0,Female,85.0,80.0,,ENGINEERING
+1074,Ana Gómez,18.0,Female,80.0,90.0,,computer science
+1075,Unknown,19.0,Male,90.0,95.0,2021.0,Electrical
+1076,Jorge Martínez,18.0,Male,75.0,75.0,,Electrical
+1077,Lucía Méndez,18.0,Male,95.0,90.0,2021.0,ENGINEERING
+1078,Camila Ríos,19.0,Male,80.0,75.0,2022.0,ENGINEERING
+1079,Camila Ríos,,nan,85.0,80.0,2021.0,ENGINEERING
+1080,Unknown,21.0,Male,90.0,90.0,2023.0,computer science
+1081,Pedro Ruiz,20.0,Female,90.0,65.0,2020.0,Engineering
+1082,Pablo S.,22.0,nan,75.0,80.0,2021.0,Electrical
+1083,Daniel A.,21.0,Male,70.0,70.0,2020.0,ENGINEERING
+1084,Ana Gómez,20.0,Female,90.0,80.0,2022.0,Computer Science
+1085,José Martínez,20.0,Male,75.0,75.0,2021.0,ENGINEERING
+1086,Ana Gómez,21.0,Female,80.0,70.0,2022.0,Computer Science
+1087,Pablo S.,22.0,Female,90.0,80.0,2022.0,Electrical
+1088,Pedro Ruiz,21.0,Female,80.0,85.0,2022.0,Electrical
+1089,Maria López,23.0,Female,,80.0,2022.0,Electrical
+1090,Maria López,23.0,Male,80.0,85.0,2021.0,Computer Science
+1091,Maria López,21.0,Female,80.0,90.0,2022.0,ENGINEERING
+1092,Carlos Gómez,18.0,Female,75.0,70.0,2022.0,Electrical
+1093,Maria López,20.0,Female,80.0,75.0,2022.0,ENGINEERING
+1094,Carlos Gómez,21.0,Male,90.0,80.0,,computer science
+1095,José Martínez,19.0,Female,75.0,75.0,2020.0,Engineering
+1096,Camila Ríos,20.0,Male,80.0,80.0,2022.0,Engineering
+1097,José Martínez,22.0,Female,70.0,90.0,2023.0,computer science
+1098,Ana Gómez,19.0,Female,85.0,70.0,2021.0,Computer Science
+1099,Marta Vega,20.0,Female,85.0,65.0,2021.0,Electrical
+1100,Lucía Méndez,20.0,Female,70.0,75.0,2022.0,Engineering
+1101,Lucía Méndez,20.0,Male,75.0,70.0,2021.0,ENGINEERING
+1102,Pedro Ruiz,23.0,Female,85.0,85.0,2021.0,ENGINEERING
+1103,Pablo S.,21.0,Female,80.0,70.0,2021.0,ENGINEERING
+1104,José Martínez,21.0,Male,80.0,75.0,2023.0,computer science
+1105,Pablo S.,19.0,Male,80.0,90.0,2020.0,Engineering
+1106,Lucía Méndez,18.0,Male,85.0,,2023.0,ENGINEERING
+1107,Marta Vega,23.0,Male,95.0,80.0,2022.0,Engineering
+1108,Luis Pérez,21.0,Female,75.0,85.0,2020.0,ENGINEERING
+1109,Maria López,19.0,Female,80.0,85.0,2022.0,computer science
+1110,Daniel A.,23.0,Male,80.0,75.0,2021.0,computer science
+1023,Ana Gómez,19.0,Male,85.0,85.0,2020.0,Engineering
+1010,Pedro Ruiz,,Female,85.0,80.0,2022.0,Engineering
+1044,Jorge Martínez,22.0,Female,85.0,85.0,2023.0,ENGINEERING
+1002,Daniel A.,23.0,Female,85.0,65.0,,ENGINEERING
+1013,Ana Gómez,21.0,Female,85.0,95.0,2023.0,ENGINEERING
+1040,Marta Vega,23.0,Male,80.0,90.0,2021.0,Computer Science
+1002,Daniel A.,23.0,Female,85.0,65.0,,ENGINEERING
+1084,Ana Gómez,20.0,Female,90.0,80.0,2022.0,Computer Science
+1065,Pedro Ruiz,19.0,nan,95.0,80.0,2022.0,computer science
+1063,Marta Vega,20.0,Female,85.0,70.0,2023.0,ENGINEERING

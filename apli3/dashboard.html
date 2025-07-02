@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pandas Data Analysis Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .api-status {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .api-status.offline {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .tab.active {
+            color: #667eea;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .tab:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .chart-wrapper {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .chart-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .data-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .data-table tr:hover {
+            background: rgba(102, 126, 234, 0.1);
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #f44336;
+        }
+        
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .info-section {
+            background: rgba(255,255,255,0.8);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .json-display {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow: auto;
+            white-space: pre-wrap;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                padding: 10px 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🐼 Pandas Data Analysis Dashboard</h1>
+        
+        <div id="apiStatus" class="api-status offline">
+            🔴 Conectando con la API...
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="showTab('ratings')">📊 Ratings Statistics</button>
+            <button class="tab" onclick="showTab('series')">📈 Series Demo</button>
+            <button class="tab" onclick="showTab('dataframe')">📋 DataFrame Demo</button>
+            <button class="tab" onclick="showTab('datasets')">🗃️ Dataset Info</button>
+            <button class="tab" onclick="showTab('filters')">🔍 Filters</button>
+        </div>
+        
+        <!-- Tab: Ratings Statistics -->
+        <div id="ratings" class="tab-content active">
+            <div class="controls">
+                <button onclick="loadRatingsStats()">🔄 Actualizar Estadísticas</button>
+                <button onclick="loadRatingsData()">📊 Cargar Datos para Gráficos</button>
+            </div>
+            
+            <div id="ratingsStatsGrid" class="stats-grid">
+                <!-- Statistics cards will be populated here -->
+            </div>
+            
+            <div class="chart-wrapper">
+                <div class="chart-title">Distribución de Ratings</div>
+                <canvas id="ratingsChart"></canvas>
+            </div>
+        </div>
+        
+        <!-- Tab: Series Demo -->
+        <div id="series" class="tab-content">
+            <div class="controls">
+                <button onclick="loadSeriesDemo()">🔄 Ejecutar Series Demo</button>
+            </div>
+            <div id="seriesContent" class="loading">Haz clic en "Ejecutar Series Demo" para ver los resultados</div>
+        </div>
+        
+        <!-- Tab: DataFrame Demo -->
+        <div id="dataframe" class="tab-content">
+            <div class="controls">
+                <button onclick="loadDataFrameDemo()">🔄 Ejecutar DataFrame Demo</button>
+            </div>
+            <div id="dataframeContent" class="loading">Haz clic en "Ejecutar DataFrame Demo" para ver los resultados</div>
+        </div>
+        
+        <!-- Tab: Dataset Info -->
+        <div id="datasets" class="tab-content">
+            <div class="controls">
+                <button onclick="loadDatasetInfo('movies')">🎬 Movies Info</button>
+                <button onclick="loadDatasetInfo('ratings')">⭐ Ratings Info</button>
+                <button onclick="loadDatasetInfo('tags')">🏷️ Tags Info</button>
+                <button onclick="loadNullCheck()">🔍 Null Check</button>
+            </div>
+            <div id="datasetsContent" class="loading">Selecciona un dataset para ver su información</div>
+        </div>
+        
+        <!-- Tab: Filters -->
+        <div id="filters" class="tab-content">
+            <div class="controls">
+                <button onclick="loadFilters()">🔄 Ejecutar Filtros</button>
+            </div>
+            <div id="filtersContent" class="loading">Haz clic en "Ejecutar Filtros" para ver los resultados</div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000';
+        let ratingsChart = null;
+        
+        // Check API status on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            checkApiStatus();
+            // Check status every 30 seconds
+            setInterval(checkApiStatus, 30000);
+        });
+        
+        // Check API status
+        async function checkApiStatus() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/`);
+                if (response.ok) {
+                    document.getElementById('apiStatus').innerHTML = '🟢 API Conectada - Todos los sistemas operativos';
+                    document.getElementById('apiStatus').className = 'api-status';
+                } else {
+                    throw new Error('API not responding');
+                }
+            } catch (error) {
+                document.getElementById('apiStatus').innerHTML = '🔴 API Desconectada - Asegúrate de que el servidor Flask esté corriendo en localhost:5000';
+                document.getElementById('apiStatus').className = 'api-status offline';
+            }
+        }
+        
+        // Tab management
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        // Utility functions
+        function showError(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="error">❌ Error: ${message}</div>`;
+        }
+        
+        function showSuccess(elementId, message) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="success">✅ ${message}</div>`;
+        }
+        
+        function showLoading(elementId) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = '<div class="loading">🔄 Cargando...</div>';
+        }
+        
+        // Load ratings statistics
+        async function loadRatingsStats() {
+            showLoading('ratingsStatsGrid');
+            try {
+                const response = await fetch(`${API_BASE_URL}/ratings/statistics`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayRatingsStats(data);
+                } else {
+                    showError('ratingsStatsGrid', data.error || 'Error loading statistics');
+                }
+            } catch (error) {
+                showError('ratingsStatsGrid', 'Error connecting to API: ' + error.message);
+            }
+        }
+        
+        function displayRatingsStats(data) {
+            const statsGrid = document.getElementById('ratingsStatsGrid');
+            const stats = data.statistics;
+            
+            statsGrid.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Count</div>
+                    <div class="stat-value">${stats.count || 0}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Mean</div>
+                    <div class="stat-value">${(data.mean || 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Std</div>
+                    <div class="stat-value">${(stats.std || 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Min</div>
+                    <div class="stat-value">${(data.min || 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Max</div>
+                    <div class="stat-value">${(data.max || 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">25%</div>
+                    <div class="stat-value">${(stats['25%'] || 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">50% (Median)</div>
+                    <div class="stat-value">${(stats['50%'] || 0).toFixed(2)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">75%</div>
+                    <div class="stat-value">${(stats['75%'] || 0).toFixed(2)}</div>
+                </div>
+            `;
+        }
+        
+        async function loadRatingsData() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/ratings/statistics`);
+                const data = await response.json();
+                
+                if (response.ok && data.raw_data) {
+                    createRatingsChart(data.raw_data);
+                } else {
+                    showError('ratingsChart', 'No data available for chart');
+                }
+            } catch (error) {
+                showError('ratingsChart', 'Error loading chart data: ' + error.message);
+            }
+        }
+        
+        function createRatingsChart(ratingsData) {
+            const ctx = document.getElementById('ratingsChart').getContext('2d');
+            
+            if (ratingsChart) {
+                ratingsChart.destroy();
+            }
+            
+            // Create histogram
+            const bins = 10;
+            const min = Math.min(...ratingsData);
+            const max = Math.max(...ratingsData);
+            const binWidth = (max - min) / bins;
+            const binLabels = [];
+            const binCounts = new Array(bins).fill(0);
+            
+            for (let i = 0; i < bins; i++) {
+                const start = min + i * binWidth;
+                const end = start + binWidth;
+                binLabels.push(`${start.toFixed(1)}-${end.toFixed(1)}`);
+                
+                ratingsData.forEach(rating => {
+                    if (rating >= start && (i === bins - 1 ? rating <= end : rating < end)) {
+                        binCounts[i]++;
+                    }
+                });
+            }
+            
+            ratingsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: binLabels,
+                    datasets: [{
+                        label: 'Frecuencia',
+                        data: binCounts,
+                        backgroundColor: 'rgba(102, 126, 234, 0.7)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Frecuencia'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Rangos de Rating'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Series Demo
+        async function loadSeriesDemo() {
+            showLoading('seriesContent');
+            try {
+                const response = await fetch(`${API_BASE_URL}/series/demo`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displaySeriesDemo(data);
+                } else {
+                    showError('seriesContent', data.error || 'Error loading series demo');
+                }
+            } catch (error) {
+                showError('seriesContent', 'Error connecting to API: ' + error.message);
+            }
+        }
+        
+        function displaySeriesDemo(data) {
+            const content = document.getElementById('seriesContent');
+            let html = '<div class="info-section">';
+            
+            // Display series information
+            if (data.series_info) {
+                html += '<h3>🔢 Información de la Serie</h3>';
+                html += `<div class="json-display">${JSON.stringify(data.series_info, null, 2)}</div>`;
+            }
+            
+            // Display operations
+            if (data.operations) {
+                html += '<h3>⚙️ Operaciones Realizadas</h3>';
+                for (const [operation, result] of Object.entries(data.operations)) {
+                    html += `<h4>${operation}</h4>`;
+                    html += `<div class="json-display">${JSON.stringify(result, null, 2)}</div>`;
+                }
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // DataFrame Demo
+        async function loadDataFrameDemo() {
+            showLoading('dataframeContent');
+            try {
+                const response = await fetch(`${API_BASE_URL}/dataframe/demo`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayDataFrameDemo(data);
+                } else {
+                    showError('dataframeContent', data.error || 'Error loading dataframe demo');
+                }
+            } catch (error) {
+                showError('dataframeContent', 'Error connecting to API: ' + error.message);
+            }
+        }
+        
+        function displayDataFrameDemo(data) {
+            const content = document.getElementById('dataframeContent');
+            let html = '<div class="info-section">';
+            
+            // Display DataFrame head
+            if (data.head) {
+                html += '<h3>📋 Primeras 5 filas del DataFrame</h3>';
+                html += createTable(data.head);
+            }
+            
+            // Display DataFrame info
+            if (data.info) {
+                html += '<h3>ℹ️ Información del DataFrame</h3>';
+                html += `<div class="json-display">${JSON.stringify(data.info, null, 2)}</div>`;
+            }
+            
+            // Display operations
+            if (data.operations) {
+                html += '<h3>⚙️ Operaciones Realizadas</h3>';
+                for (const [operation, result] of Object.entries(data.operations)) {
+                    html += `<h4>${operation}</h4>`;
+                    if (typeof result === 'object' && Array.isArray(result)) {
+                        html += createTable(result);
+                    } else {
+                        html += `<div class="json-display">${JSON.stringify(result, null, 2)}</div>`;
+                    }
+                }
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // Dataset Info
+        async function loadDatasetInfo(dataset) {
+            showLoading('datasetsContent');
+            try {
+                const response = await fetch(`${API_BASE_URL}/dataset/${dataset}/info`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayDatasetInfo(data, dataset);
+                } else {
+                    showError('datasetsContent', data.error || `Error loading ${dataset} info`);
+                }
+            } catch (error) {
+                showError('datasetsContent', 'Error connecting to API: ' + error.message);
+            }
+        }
+        
+        function displayDatasetInfo(data, dataset) {
+            const content = document.getElementById('datasetsContent');
+            let html = `<div class="info-section">`;
+            html += `<h3>📊 Dataset: ${dataset.toUpperCase()}</h3>`;
+            
+            // Display basic info
+            if (data.shape) {
+                html += `<p><strong>Shape:</strong> ${data.shape[0]} rows × ${data.shape[1]} columns</p>`;
+            }
+            
+            if (data.columns) {
+                html += `<h4>📝 Columnas:</h4>`;
+                html += `<div class="json-display">${JSON.stringify(data.columns, null, 2)}</div>`;
+            }
+            
+            if (data.dtypes) {
+                html += `<h4>🏷️ Tipos de Datos:</h4>`;
+                html += `<div class="json-display">${JSON.stringify(data.dtypes, null, 2)}</div>`;
+            }
+            
+            if (data.head) {
+                html += `<h4>👀 Primeras 5 filas:</h4>`;
+                html += createTable(data.head);
+            }
+            
+            if (data.memory_usage) {
+                html += `<h4>💾 Uso de Memoria:</h4>`;
+                html += `<div class="json-display">${JSON.stringify(data.memory_usage, null, 2)}</div>`;
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // Null Check
+        async function loadNullCheck() {
+            showLoading('datasetsContent');
+            try {
+                const response = await fetch(`${API_BASE_URL}/dataset/null-check`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayNullCheck(data);
+                } else {
+                    showError('datasetsContent', data.error || 'Error loading null check');
+                }
+            } catch (error) {
+                showError('datasetsContent', 'Error connecting to API: ' + error.message);
+            }
+        }
+        
+        function displayNullCheck(data) {
+            const content = document.getElementById('datasetsContent');
+            let html = '<div class="info-section">';
+            html += '<h3>🔍 Análisis de Valores Nulos</h3>';
+            
+            for (const [dataset, nullInfo] of Object.entries(data)) {
+                html += `<h4>📊 ${dataset.toUpperCase()}</h4>`;
+                html += `<div class="json-display">${JSON.stringify(nullInfo, null, 2)}</div>`;
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // Filters
+        async function loadFilters() {
+            showLoading('filtersContent');
+            try {
+                const response = await fetch(`${API_BASE_URL}/filters/demo`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    displayFilters(data);
+                } else {
+                    showError('filtersContent', data.error || 'Error loading filters');
+                }
+            } catch (error) {
+                showError('filtersContent', 'Error connecting to API: ' + error.message);
+            }
+        }
+        
+        function displayFilters(data) {
+            const content = document.getElementById('filtersContent');
+            let html = '<div class="info-section">';
+            html += '<h3>🔍 Ejemplos de Filtros</h3>';
+            
+            for (const [filterName, result] of Object.entries(data)) {
+                html += `<h4>🎯 ${filterName}</h4>`;
+                if (typeof result === 'object' && Array.isArray(result)) {
+                    html += createTable(result);
+                } else {
+                    html += `<div class="json-display">${JSON.stringify(result, null, 2)}</div>`;
+                }
+            }
+            
+            html += '</div>';
+            content.innerHTML = html;
+        }
+        
+        // Utility function to create HTML tables
+        function createTable(data) {
+            if (!data || !Array.isArray(data) || data.length === 0) {
+                return '<p>No data available</p>';
+            }
+            
+            const firstRow = data[0];
+            const columns = Object.keys(firstRow);
+            
+            let html = '<table class="data-table">';
+            
+            // Header
+            html += '<thead><tr>';
+            columns.forEach(col => {
+                html += `<th>${col}</th>`;
+            });
+            html += '</tr></thead>';
+            
+            // Body
+            html += '<tbody>';
+            data.forEach(row => {
+                html += '<tr>';
+                columns.forEach(col => {
+                    const value = row[col];
+                    html += `<td>${value !== null && value !== undefined ? value : 'N/A'}</td>`;
+                });
+                html += '</tr>';
+            });
+            html += '</tbody>';
+            
+            html += '</table>';
+            return html;
+        }
+    </script>
+</body>
+</html>

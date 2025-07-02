@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hola Mundo Futurista</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(ellipse at center, #0f0f0f 0%, #050505 100%);
+      font-family: 'Orbitron', sans-serif;
+      color: #00fff7;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: 4rem;
+      text-align: center;
+      text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7;
+      animation: glow 2s infinite alternate;
+      margin-bottom: 20px;
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7;
+      }
+      to {
+        text-shadow: 0 0 20px #00fff7, 0 0 30px #00fff7, 0 0 60px #00fff7;
+      }
+    }
+    img {
+      width: 190px;
+      height: 180px;
+      border-radius: 50%;
+      border: 2px solid #00fff7;
+      box-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7, 0 0 40px #00fff7;
+      display: block;
+      margin: 0 auto;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+    }
+    img:hover {
+      transform: scale(1.1) rotate(-2deg);
+      box-shadow: 0 0 30px #00fff7, 0 0 60px #00fff7, 0 0 100px #00fff7;
+      filter: brightness(1.2) contrast(1.2);
+      cursor: pointer;
+    }
+
+    /* Fuente futurista desde Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap');
+    .contact-btn {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 15px 40px;
+      font-size: 1.3rem;
+      font-family: 'Orbitron', sans-serif;
+      color: #00fff7;
+      background: transparent;
+      border: 2px solid #00fff7;
+      border-radius: 30px;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 0 10px #00fff7, 0 0 20px #00fff7;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .contact-btn:hover {
+      background: #00fff7;
+      color: #0f0f0f;
+      box-shadow: 0 0 30px #00fff7, 0 0 60px #00fff7;
+      transform: scale(1.07);
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>JEFFERSON BONE</h1>
+  <img src="https://static.vecteezy.com/system/resources/previews/025/463/773/non_2x/hacker-logo-design-a-mysterious-and-dangerous-hacker-illustration-vector.jpg" alt="">
+  <a href="static/portafolio/index.html" class="contact-btn">Contactar</a>
+</body>
+</html>

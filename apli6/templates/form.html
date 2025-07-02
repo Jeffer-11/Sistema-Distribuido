@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de CV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='cv.png') }}">
+    <style>
+        body {
+            background: #f4f4f4;
+            min-height: 100vh;
+        }
+        .cv-form-card {
+            max-width: 1100px;
+            margin: 40px auto;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            background: #fff;
+            padding: 2.5rem 3rem;
+        }
+        .form-section-title {
+            font-weight: 700;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #0d6efd;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+        .add-btn {
+            font-size: 0.95rem;
+            border-radius: 1rem;
+            border: 1px solid #0d6efd;
+            color: #0d6efd;
+            background: #f4f8ff;
+            transition: background 0.2s, color 0.2s;
+        }
+        .add-btn:hover {
+            background: #0d6efd;
+            color: #fff;
+        }
+        .dynamic-fields > .row, .dynamic-fields > .mb-2, .dynamic-fields > .mb-3 {
+            margin-bottom: 0.5rem !important;
+        }
+        .form-control, .form-select {
+            border-radius: 0.7rem;
+        }
+        .btn-success {
+            border-radius: 1.2rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.7rem 2.5rem;
+        }
+        .input-group-text {
+            background: #f4f8ff;
+            border-radius: 0.7rem 0 0 0.7rem;
+            border-right: 0;
+        }
+        .input-group .form-control {
+            border-radius: 0 0.7rem 0.7rem 0;
+        }
+        @media (max-width: 900px) {
+            .cv-form-card { padding: 1.2rem 0.5rem; }
+        }
+    </style>
+    <script>
+    function addField(section, html) {
+        const container = document.getElementById(section);
+        container.insertAdjacentHTML('beforeend', html);
+    }
+    function removeField(btn) {
+        // Elimina el bloque padre más cercano (row o mb-2/mb-3)
+        let parent = btn.closest('.row, .mb-2, .mb-3');
+        if (parent) parent.remove();
+    }
+    function addEducation() {
+        const section = document.getElementById('education-section');
+        const count = section.querySelectorAll('.row.mb-2').length;
+        let removeBtn = '';
+        if (count > 0) {
+            removeBtn = `<div class='col-md-2 d-flex align-items-center justify-content-end'><button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button></div>`;
+        }
+        addField('education-section', `<div class='row mb-2 align-items-center position-relative'><div class='col-md-5'><div class='input-group'><span class='input-group-text'><i class='fa-solid fa-graduation-cap'></i></span><input type='text' class='form-control mb-1' name='education_title' placeholder='Título, Ej: Bachelor of Business Management' required></div></div><div class='col-md-5'><div class='input-group'><span class='input-group-text'><i class='fa-regular fa-calendar'></i></span><input type='text' class='form-control mb-1' name='education_years' placeholder='Años, Ej: 2016 - 2020' required></div></div>${removeBtn}</div>`);
+    }
+    function addSkill() {
+        const section = document.getElementById('skills-section');
+        const count = section.querySelectorAll('.row.mb-2').length;
+        let removeBtn = '';
+        if (count > 0) {
+            removeBtn = `<div class='col-md-2 d-flex align-items-center justify-content-end'><button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button></div>`;
+        }
+        addField('skills-section', `<div class='row mb-2 align-items-center'><div class='col-md-5'><div class='input-group'><span class='input-group-text'><i class='fa-solid fa-star'></i></span><input type='text' class='form-control mb-1' name='skill_name' placeholder='Habilidad' required></div></div><div class='col-md-5 d-flex align-items-center'><input type='range' class='form-range flex-grow-1' name='skill_level' min='1' max='5' value='3' oninput="this.nextElementSibling.innerText = this.value + ' / 5'"/><span class='ms-2' style="min-width: 2.2em; text-align: right;">3 / 5</span></div>${removeBtn}</div>`);
+    }
+    function addLanguage() {
+        const section = document.getElementById('languages-section');
+        const count = section.querySelectorAll('.row.mb-2').length;
+        let removeBtn = '';
+        if (count > 0) {
+            removeBtn = `<div class='col-md-2 d-flex align-items-center justify-content-end'><button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button></div>`;
+        }
+        addField('languages-section', `<div class='row mb-2 align-items-center'><div class='col-md-10'><div class='input-group'><span class='input-group-text'><i class='fa-solid fa-language'></i></span><input type='text' class='form-control' name='language' placeholder='Idioma' required></div></div>${removeBtn}</div>`);
+    }
+    function addExperience() {
+        const section = document.getElementById('experience-section');
+        const count = section.querySelectorAll('.row.mb-3').length;
+        let removeBtn = '';
+        if (count > 0) {
+            removeBtn = `<div class='col-md-2 d-flex align-items-center justify-content-end'><button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button></div>`;
+        }
+        addField('experience-section', `<div class='row mb-3 align-items-center'><div class='col-md-3'><div class='input-group'><span class='input-group-text'><i class='fa-solid fa-briefcase'></i></span><input type='text' class='form-control mb-1' name='exp_title' placeholder='Puesto, Ej: Product Design Manager' required></div></div><div class='col-md-3'><div class='input-group'><span class='input-group-text'><i class='fa-solid fa-building'></i></span><input type='text' class='form-control mb-1' name='exp_company' placeholder='Empresa, Ej: Arowwai Industries' required></div></div><div class='col-md-3'><div class='input-group'><span class='input-group-text'><i class='fa-regular fa-calendar'></i></span><input type='text' class='form-control mb-1' name='exp_years' placeholder='Años, Ej: 2020 - 2023' required></div></div>${removeBtn}<div class='col-12 mt-1'><textarea class='form-control' name='exp_desc' rows='2' placeholder='Descripción'></textarea></div></div>`);
+    }
+    function previewPhoto(event) {
+        const input = event.target;
+        const alert = document.getElementById('photo-size-alert');
+        alert.style.display = 'none';
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    if (img.width > 900 || img.height > 900) {
+                        alert.style.display = 'block';
+                        input.value = '';
+                        document.getElementById('preview-img-container').style.display = 'none';
+                        document.getElementById('photo-preview-container').style.display = 'block';
+                        return;
+                    }
+                    document.getElementById('preview-img').src = e.target.result;
+                    document.getElementById('preview-img-container').style.display = 'block';
+                    document.getElementById('photo-preview-container').style.display = 'none';
+                };
+                img.src = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    function changePhoto() {
+        document.getElementById('photo').value = '';
+        document.getElementById('preview-img-container').style.display = 'none';
+        document.getElementById('photo-preview-container').style.display = 'block';
+    }
+    </script>
+</head>
+<body>
+<div class="cv-form-card">
+    <h2 class="mb-4 text-center" style="font-weight:800; letter-spacing:1px;">Generador de Currículum Vitae</h2>
+    {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+        {% if data and data.photo %}
+        <input type="hidden" name="photo" value="{{ data.photo }}">
+        {% endif %}
+        <div class="row mb-4 align-items-center">
+            <div class="col-md-3 text-center mb-3 mb-md-0">
+                <label for="photo" class="form-label">Foto de perfil</label>
+                <div id="photo-preview-container" {% if data and data.photo %}style="display:none;"{% endif %}>
+                    <input class="form-control" type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)">
+                    <div id="photo-size-alert" class="form-text text-danger small" style="display:none;">La imagen no debe superar 600x600 píxeles. Selecciona una imagen más pequeña.</div>
+                </div>
+                <div id="preview-img-container" {% if not (data and data.photo) %}style="display:none;"{% endif %}>
+                    {% if data and data.photo %}
+                        <img id="preview-img" src="{{ url_for('static', filename='uploads/' ~ data.photo) }}" alt="Vista previa" class="img-thumbnail mb-2" style="max-width:180px; max-height:220px; border-radius:1rem;">
+                    {% else %}
+                        <img id="preview-img" src="#" alt="Vista previa" class="img-thumbnail mb-2" style="max-width:180px; max-height:220px; border-radius:1rem;">
+                    {% endif %}
+                    <br>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="changePhoto()"><i class="fa-solid fa-pen"></i> Cambiar imagen</button>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Nombre completo</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-user"></i></span>
+                            <input type="text" class="form-control" id="name" name="name" required value="{{ data.name if data and data.name else '' }}">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="position" class="form-label">Puesto</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-briefcase"></i></span>
+                            <input type="text" class="form-control" id="position" name="position" required value="{{ data.position if data and data.position else '' }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label for="about" class="form-label">Sobre mí</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-align-left"></i></span>
+                <textarea class="form-control" id="about" name="about" rows="2" required>{{ data.about if data and data.about else '' }}</textarea>
+            </div>
+        </div>
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <label for="phone" class="form-label">Móvil</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-phone"></i></span>
+                    <input type="text" class="form-control" id="phone" name="phone" required value="{{ data.phone if data and data.phone else '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="email" class="form-label">Email</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-solid fa-envelope"></i></span>
+                    <input type="email" class="form-control" id="email" name="email" required value="{{ data.email if data and data.email else '' }}">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="linkedin" class="form-label">LinkedIn</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fa-brands fa-linkedin"></i></span>
+                    <input type="text" class="form-control" id="linkedin" name="linkedin" value="{{ data.linkedin if data and data.linkedin else '' }}">
+                </div>
+            </div>
+        </div>
+        <div class="form-section-title">Formación</div>
+        <div id="education-section" class="dynamic-fields">
+            {% if data and data.education %}
+                {% for title, years in data.education %}
+                <div class='row mb-2 align-items-center'>
+                    <div class='col-md-5'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-solid fa-graduation-cap'></i></span>
+                            <input type='text' class='form-control mb-1' name='education_title' placeholder='Título, Ej: Bachelor of Business Management' required value='{{ title }}'>
+                        </div>
+                    </div>
+                    <div class='col-md-5'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-regular fa-calendar'></i></span>
+                            <input type='text' class='form-control mb-1' name='education_years' placeholder='Años, Ej: 2016 - 2020' required value='{{ years }}'>
+                        </div>
+                    </div>
+                    {% if not loop.first and data.education|length > 1 %}
+                    <div class='col-md-2 d-flex align-items-center justify-content-end'>
+                        <button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if not data or not data.education %}
+        <script>window.addEventListener('DOMContentLoaded', addEducation);</script>
+        {% endif %}
+        <button type="button" class="btn add-btn mb-3" onclick="addEducation()"><i class="fa-solid fa-plus"></i> Agregar formación</button>
+        <div class="form-section-title">Habilidades</div>
+        <div id="skills-section" class="dynamic-fields">
+            {% if data and data.skills %}
+                {% for skill, level in data.skills %}
+                <div class='row mb-2 align-items-center'>
+                    <div class='col-md-5'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-solid fa-star'></i></span>
+                            <input type='text' class='form-control mb-1' name='skill_name' placeholder='Habilidad' required value='{{ skill }}'>
+                        </div>
+                    </div>
+                    <div class='col-md-5 d-flex align-items-center'>
+                        <input type='range' class='form-range flex-grow-1' name='skill_level' min='1' max='5' value='{{ level }}' oninput="this.nextElementSibling.innerText = this.value + ' / 5'">
+                        <span class='ms-2' style="min-width: 2.2em; text-align: right;">{{ level }}/5</span>
+                    </div>
+                    {% if not loop.first and data.skills|length > 1 %}
+                    <div class='col-md-2 d-flex align-items-center justify-content-end'>
+                        <button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if not data or not data.skills %}
+        <script>window.addEventListener('DOMContentLoaded', addSkill);</script>
+        {% endif %}
+        <button type="button" class="btn add-btn mb-3" onclick="addSkill()"><i class="fa-solid fa-plus"></i> Agregar habilidad</button>
+        <div class="form-section-title">Idiomas</div>
+        <div id="languages-section" class="dynamic-fields">
+            {% if data and data.languages %}
+                {% for lang in data.languages %}
+                <div class='row mb-2 align-items-center'>
+                    <div class='col-md-10'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-solid fa-language'></i></span>
+                            <input type='text' class='form-control' name='language' placeholder='Idioma' required value='{{ lang }}'>
+                        </div>
+                    </div>
+                    {% if not loop.first and data.languages|length > 1 %}
+                    <div class='col-md-2 d-flex align-items-center justify-content-end'>
+                        <button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if not data or not data.languages %}
+        <script>window.addEventListener('DOMContentLoaded', addLanguage);</script>
+        {% endif %}
+        <button type="button" class="btn add-btn mb-3" onclick="addLanguage()"><i class="fa-solid fa-plus"></i> Agregar idioma</button>
+        <div class="form-section-title">Experiencia profesional</div>
+        <div id="experience-section" class="dynamic-fields">
+            {% if data and data.experience %}
+                {% for exp in data.experience %}
+                <div class='row mb-3 align-items-center'>
+                    <div class='col-md-3'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-solid fa-briefcase'></i></span>
+                            <input type='text' class='form-control mb-1' name='exp_title' placeholder='Puesto, Ej: Product Design Manager' required value='{{ exp.title }}'>
+                        </div>
+                    </div>
+                    <div class='col-md-3'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-solid fa-building'></i></span>
+                            <input type='text' class='form-control mb-1' name='exp_company' placeholder='Empresa, Ej: Arowwai Industries' required value='{{ exp.company }}'>
+                        </div>
+                    </div>
+                    <div class='col-md-3'>
+                        <div class='input-group'>
+                            <span class='input-group-text'><i class='fa-regular fa-calendar'></i></span>
+                            <input type='text' class='form-control mb-1' name='exp_years' placeholder='Años, Ej: 2020 - 2023' required value='{{ exp.years }}'>
+                        </div>
+                    </div>
+                    <div class='col-md-2 d-flex align-items-center justify-content-end'>
+                        {% if not loop.first and data.experience|length > 1 %}
+                        <button type='button' class='btn btn-link text-danger p-0 ms-2' onclick='removeField(this)' title='Eliminar'><i class='fa-solid fa-trash'></i></button>
+                        {% endif %}
+                    </div>
+                    <div class='col-12 mt-1'>
+                        <textarea class='form-control' name='exp_desc' rows='2' placeholder='Descripción'>{{ exp.desc }}</textarea>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+        {% if not data or not data.experience %}
+        <script>window.addEventListener('DOMContentLoaded', addExperience);</script>
+        {% endif %}
+        <button type="button" class="btn add-btn mb-3" onclick="addExperience()"><i class="fa-solid fa-plus"></i> Agregar experiencia</button>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success"><i class="fa-solid fa-file-lines me-2"></i>Generar CV</button>
+        </div>
+    </form>
+</div>
+<script>
+// Mostrar el valor del range en tiempo real para los campos agregados dinámicamente
+document.addEventListener('input', function(e) {
+    if (e.target.matches("input[type='range'][name='skill_level']")) {
+        e.target.nextElementSibling.innerText = e.target.value + ' / 5';
+    }
+});
+</script>
+</body>
+</html> 
